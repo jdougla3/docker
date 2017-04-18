@@ -1,0 +1,44 @@
+version: '3'
+
+networks:
+  bnet:
+    external: true
+
+    # assume the bnet bridge network has been created with this command:
+    # docker network create --driver bridge --subnet 172.18.0.0/16 --gateway 172.18.0.1 bnet
+
+services:
+
+	# docker run -d --ip 172.18.0.2 -p 2379:2379 --net bnet --name etcd quay.io/coreos/etcd /usr/local/bin/etcd -advertise-client-urls http://0.0.0.0:2379 -listen-client-urls http://0.0.0.0:2379 -debug
+	
+  etcd:
+		image: quay.io/coreos/etcd"
+		command: /usr/local/bin/etcd -advertise-client-urls http://0.0.0.0:2379 -listen-client-urls http://0.0.0.0:2379 -debug
+		networks:
+			bnet:
+				ipv4_address: 172.18.0.2
+		ports:
+      - "2379:2379"
+    environment:
+      SERVICE_IGNORE: 'true'
+
+  # docker run -d --net bnet --ip 172.18.0.3 --name skydns skynetservices/skydns -machines 'http://172.18.0.2:2379' -addr '0.0.0.0:53'
+
+  skydns:
+    image: skynetservices/skydns
+    command: -machines 'http://172.18.0.2:2379' -addr '0.0.0.0:53'
+    networks:
+      bnet:
+        ipv4_address: 172.18.0.3
+    environment:
+      SERVICE_IGNORE: 'true'
+
+  # docker run -d --name=registrator --net bnet --ip 172.18.0.4 --volume=/var/run/docker.sock:/tmp/docker.sock gliderlabs/registrator:latest -internal skydns2://172.18.0.2:2379/docker.local
+
+  registrator:
+    image: gliderlabs/registrator:latest
+    # ip must be same as etcd above
+    command: -internal skydns2://172.18.0.2:2379/docker.local -domain docker.local
+    networks:
+      bnet:
+        ipv4_address: 172.18.0.4
