@@ -7,7 +7,7 @@ main() {
   # additional ethernet intf inside moby (ethN); default: 1
   ethintf=${DOCKER_TAP_MOBY_ETH-1}
   # name of the docker network to create; default: tap
-  network=${DOCKER_TAP_NETWORK-tap}
+  network=${DOCKER_TAP_NETWORK-bnet}
   # tap intf to use on host (/dev/X); default: tap1
   tapintf=${DOCKER_TAP_DEVICE-tap1}
   # name of the docker network's bridge intf inside moby; default: br-$tapintf
