@@ -18,6 +18,10 @@ note this is a minor modification of https://github.com/mal/docker-for-mac-host-
 	1. `docker network ls` --> you should see a network named `bnet` with driver `bridge`
 	1. `docker network inspect bnet` --> more detailed info.  Make sure you have subnet=172.18.0.0/16 and gateway=172.18.0.1
 1. Execute the docker-compose file to bring up the networking support containers: `docker-compose -f local-network-compose.yaml up -d`
+1. If you don't have an entry for the `docker.local` domain in `/etc/resolver/`, then add one:
+	1. `su -`
+	1. `echo "nameserver 172.18.0.3" | tee -a /etc/resolver/docker.local`
+	1. `exit`
 
 _Note:_ You will need to re-run steps 4, 6, and 7 each time you reboot your machine.
 
@@ -45,7 +49,7 @@ round-trip min/avg/max/stddev = 0.331/0.395/0.458/0.063 ms
 ```
 
 ```
-$: curl -s http://tomcat.docker.local | head
+$: curl -s http://tomcat.docker.local | head -20
 
 
 
