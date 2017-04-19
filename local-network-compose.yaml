@@ -21,6 +21,7 @@ services:
       - "2379:2379"
     environment:
       SERVICE_IGNORE: 'true'
+    container_name: etcd
 
   # docker run -d --net bnet --ip 172.18.0.3 --name skydns skynetservices/skydns -machines 'http://172.18.0.2:2379' -addr '0.0.0.0:53'
 
@@ -32,6 +33,7 @@ services:
         ipv4_address: 172.18.0.3
     environment:
       SERVICE_IGNORE: 'true'
+    container_name: skydns
     depends_on:
       - etcd
 
@@ -46,5 +48,6 @@ services:
         ipv4_address: 172.18.0.4
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock
+    container_name: registrator
     depends_on:
       - skydns
