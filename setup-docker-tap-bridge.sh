@@ -106,24 +106,34 @@ create_docker_network() {
 }
 
 bridge_docker_network() {
-  log Bridge tap into docker network
-  echo brctl addif $(
-    docker network inspect -f '
-      {{if index .Options "com.docker.network.bridge.name"}}
-        {{index .Options "com.docker.network.bridge.name"}}
-      {{else}}
-        {{.Id | printf "br-%.12s"}}
-      {{end}}
-    ' $network
-  ) eth$ethintf \
-  > $libdir/Data/com.docker.driver.amd64-linux/tty
+  if ifconfig -L $tapintf > /dev/null 2>&1 ; then
+    log Bridge tap into docker network
+    echo brctl addif $(
+      docker network inspect -f '
+        {{if index .Options "com.docker.network.bridge.name"}}
+          {{index .Options "com.docker.network.bridge.name"}}
+        {{else}}
+          {{.Id | printf "br-%.12s"}}
+        {{end}}
+      ' $network
+    ) eth$ethintf \
+    > $libdir/Data/com.docker.driver.amd64-linux/tty
+  else
+    echo 'Please restart docker to initialize the ' $tapintf ' interface...'
+    exit -1
+  fi
 }
 
 assign_ip_to_tap_intf() {
-  log Assign the network gateway IP to the tap interface
-  sudo ifconfig $tapintf $(
+  if ifconfig -L $tapintf > /dev/null 2>&1 ; then
+    log Assign the network gateway IP to the tap interface
+    sudo ifconfig $tapintf $(
     docker network inspect -f '{{(index .IPAM.Config 0).Gateway}}' $network
-  ) up
+    ) up
+  else
+    echo 'Please restart docker to initialize the ' $tapintf ' interface...'
+    exit -1
+  fi
 }
 
 main "$@"
