@@ -119,7 +119,7 @@ bridge_docker_network() {
     ) eth$ethintf \
     > $libdir/Data/com.docker.driver.amd64-linux/tty
   else
-    echo 'Please restart docker to initialize the ' $tapintf ' interface...'
+    echo 'Please restart docker to initialize the' $tapintf 'interface, then run this script again after docker restarts'
     exit -1
   fi
 }
@@ -131,7 +131,7 @@ assign_ip_to_tap_intf() {
     docker network inspect -f '{{(index .IPAM.Config 0).Gateway}}' $network
     ) up
   else
-    echo 'Please restart docker to initialize the ' $tapintf ' interface...'
+    echo 'Please restart docker to initialize the' $tapintf 'interface, then run this script again after docker restarts'
     exit -1
   fi
 }
