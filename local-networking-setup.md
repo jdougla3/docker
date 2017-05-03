@@ -8,10 +8,10 @@ bridge network.
 1. Download and install Docker for Mac
 1. Install the tun/tap OSX networking kernel extension: http://tuntaposx.sourceforge.net/
 1. Open a terminal/shell
-1. Run the shell script `setup-docker-tap-bridge.sh`.  This creates a docker network and bridges it to the `tap1` interface installed above; 
-note this is a minor modification of https://github.com/mal/docker-for-mac-host-bridge.
+1. If you haven't already (via a previous setup), copy the shell script `dockerbridge` to a directory on your path (e.g., `/usr/local/bin`).
+1. Run `dockerbridge`. This creates a docker network and bridges it to the `tap1` interface installed above; note this is a minor modification of https://github.com/mal/docker-for-mac-host-bridge.
 1. You will be prompted for your su password and also to restart docker.
-1. After Docker restarts, run the shell script `setup-docker-tap-bridge.sh` again.
+1. After Docker restarts, run the `dockerbridge` script again.
 1. To confirm success:
 	1. `ifconfig` in a terminal.  You should see the `tap1` interface up and bound to the 172.18.0.1 subnet.
 	1. `docker network ls` --> you should see a network named `bnet` with driver `bridge`
@@ -22,7 +22,7 @@ note this is a minor modification of https://github.com/mal/docker-for-mac-host-
 	1. `echo "nameserver 172.18.0.3" | tee -a /etc/resolver/docker.local`
 	1. `exit`
 
-_Note:_ You will need to re-run steps 4, 5, and 6 each time you reboot your machine.
+_Note:_ You will need to re-run steps 5-7 each time you reboot your machine.
 
 #### To bring up a container:
 

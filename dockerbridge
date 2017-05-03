@@ -1,5 +1,8 @@
 #!/bin/bash -e
 
+# this is intended to be installed in /usr/local/bin
+# that way, you just run *dockerbridge* as a command, and don't have to remember the path etc.
+
 main() {
   appdir=/Applications/Docker.app
   libdir=$HOME/Library/Containers/com.docker.docker
