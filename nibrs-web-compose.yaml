@@ -1,0 +1,29 @@
+# Docker Compose file that brings up pentaho and demo analytics databases
+# To run:  docker-compose -f nibrs-web-compose.yaml up -d
+version: '3'
+
+networks:
+  nibrs_nw:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+      -
+        subnet: 172.18.0.0/16
+
+services:
+
+  nibrs-httpd-proxy:
+    container_name: nibrs-httpd-proxy
+    image: searchncjis/nibrs-httpd-proxy
+    networks:
+      nibrs_nw:
+    ports: 
+      - "80:80"
+    
+  nibrs-saiku:
+    container_name: nibrs-web
+    image: searchncjis/nibrs-web
+    networks:
+      nibrs_nw:
+      
