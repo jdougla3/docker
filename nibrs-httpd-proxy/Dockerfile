@@ -11,8 +11,11 @@ MAINTAINER SEARCH "http://www.search.org"
 RUN printf "\nInclude /usr/local/apache2/conf/proxy.conf\n" >> /usr/local/apache2/conf/httpd.conf
 
 EXPOSE 80
+EXPOSE 443
 
 COPY files/proxy.conf /usr/local/apache2/conf
+COPY files/httpd.conf /usr/local/apache2/conf
+COPY files/httpd-ssl.conf /usr/local/apache2/conf/extra
 
 
 

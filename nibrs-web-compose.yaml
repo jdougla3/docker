@@ -19,11 +19,13 @@ services:
     networks:
       nibrs_nw:
     ports: 
+      - "443:443"
       - "80:80"
+    volumes:
+      - "/opt/certs/:/opt/certs/" 
     
   nibrs-saiku:
     container_name: nibrs-web
     image: searchncjis/nibrs-web
     networks:
       nibrs_nw:
-      
