@@ -21,6 +21,7 @@ services:
     ports: 
       - "443:443"
       - "80:80"
+    # we need this volume since this SSL cert and key must be on the docker host file system
     volumes:
       - "/opt/certs/:/opt/certs/" 
     
