@@ -1,0 +1,33 @@
+# Docker Compose file for a local deployment of NIBRS Saiku
+# To run:  docker-compose -f nibrs-saiku-local-compose.yaml up -d
+version: '3'
+
+networks:
+  nibrs_nw:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+      -
+        subnet: 172.18.0.0/16
+
+services:
+
+  nibrs-db:
+    container_name: nibrs-db
+    image: searchncjis/nibrs-db
+    networks:
+      nibrs_nw:
+
+
+  nibrs-saiku:
+    container_name: nibrs-saiku
+    image: searchncjis/nibrs-saiku
+    ports: 
+      - "8080:80"
+    expose:
+      - "8080"
+    networks:
+      nibrs_nw:
+    
+      
