@@ -13,16 +13,16 @@ networks:
 
 services:
 
-  nibrs-db:
-    container_name: nibrs-db
-    image: searchncjis/nibrs-db
+  db-analytics-nibrs:
+    container_name: db-analytics-nibrs
+    image: searchncjis/db-analytics-nibrs
     networks:
       nibrs_nw:
 
 
-  nibrs-saiku:
-    container_name: nibrs-saiku
-    image: searchncjis/nibrs-saiku
+  saiku-analytics-nibrs:
+    container_name: saiku-analytics-nibrs
+    image: searchncjis/saiku-analytics-nibrs
     ports: 
       - "8080:80"
     expose:
